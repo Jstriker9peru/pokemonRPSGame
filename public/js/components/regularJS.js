@@ -17,7 +17,7 @@ var gameState = {
     attack: 52,
     defense: 43,
     level: 1,
-    img: 'https://thumbs.gfycat.com/AstonishingDisgustingAsp-max-1mb.gif'
+    img: 'http://media.giphy.com/media/RkyBge2M46ULK/giphy.gif'
   }, {
     name: 'bulbasaur',
     type: 'grass',
