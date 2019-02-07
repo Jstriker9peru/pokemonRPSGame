@@ -482,6 +482,12 @@ display: flex;
     margin-top: 15%;
     animation: titleShake 1s ease-in-out infinite alternate;
   }
+  &.newBackground {
+    background: rgb(176,108,178) !important; /* Old browsers */
+    background: -moz-linear-gradient(45deg, rgba(176,108,178,1) 0%, rgba(243,199,249,1) 23%, rgba(178,14,159,1) 98%) !important; /* FF3.6-15 */
+    background: -webkit-linear-gradient(45deg, rgba(176,108,178,1) 0%,rgba(243,199,249,1) 23%,rgba(178,14,159,1) 98%) !important; /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(45deg, rgba(176,108,178,1) 0%,rgba(243,199,249,1) 23%,rgba(178,14,159,1) 98%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  }
   &.active1 {
     top: -200vh;
   }

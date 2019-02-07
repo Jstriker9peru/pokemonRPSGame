@@ -340,14 +340,48 @@ let gameState = {
   checkWinner: function(enemy, attacker) {
     console.log(enemy.health + ' ' + attacker.health)
     console.log(typeof(enemy.health));
-    if (enemy.health <= 0 || attacker.health <= 0) {
+    let loser;
+    if (enemy.health <= 0) {
+      loser = enemy.name;
+    } else if (attacker.health <= 0) {
+      loser = attacker.name;
+    } else {
+      loser = false;
+    }
 
+    console.log('the loser is ' + loser);
+    
+    if (loser !== false) {
+      let userName = gameState.currentPokemon[0].name;
+      let cpuName = gameState.currentRivalPokemon[0].name;
+      console.log('the userName is ' + userName);
+      console.log('the cpuName is ' + cpuName);
+
+
+      if (loser == cpuName) {
+        document.querySelector('.changePlayer').innerHTML = 'You win!';
+        document.querySelector('.winnerImage').src = "https://www.tipeeestream.com/bundles/widget/images/animation/dragoran.gif";
+        gameState.elements.winnerScreenEl.classList.remove('newBackground');
         gameState.elements.winnerScreenEl.classList.toggle('active1');
+
         setTimeout(function() {
           gameState.elements.winnerScreenEl.classList.toggle('active1');
         },3000);
+
+      } else if (loser == userName) {
+        document.querySelector('.changePlayer').innerHTML = 'CPU Wins!';
+        document.querySelector('.winnerImage').src = "https://thumbs.gfycat.com/ScholarlyNegligibleAfricangroundhornbill-max-1mb.gif";
+        gameState.elements.winnerScreenEl.classList.add('newBackground');
+
         
-        gameState.healthReset(enemy, attacker);
+        gameState.elements.winnerScreenEl.classList.toggle('active1');
+
+        setTimeout(function() {
+          gameState.elements.winnerScreenEl.classList.toggle('active1');
+        },3000);
+      }
+        
+      gameState.healthReset(enemy, attacker);
     } 
   }, 
   randomNumber: function (min, max) {
