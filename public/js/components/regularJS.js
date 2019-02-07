@@ -6,6 +6,8 @@ webpackJsonp([0],{
 "use strict";
 
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 // State
 var gameState = {
   userPokemon: '',
@@ -38,7 +40,8 @@ var gameState = {
   elements: {
     pokemonsEl: document.querySelector('.select-screen').querySelectorAll('.character'),
     battleScreenEl: document.getElementById('battle-screen'),
-    attackBtnsEl: document.getElementById('battle-screen').querySelectorAll('.attack')
+    attackBtnsEl: document.getElementById('battle-screen').querySelectorAll('.attack'),
+    winnerScreenEl: document.getElementById('winner-screen')
   },
   init: function init() {
     console.log(gameState.elements.attackBtnsEl);
@@ -125,22 +128,12 @@ var gameState = {
       document.querySelector('.choices').removeChild(child.childNodes[0]);
     }
 
-    // if (currentPokemon.health >= 1 && currentRivalPokemon.health >= 1) {
-    //   document.querySelector('.choices').appendChild(userClone);
-    //   document.querySelector('.choices').appendChild(cpuClone);
-    //   let items = document.querySelectorAll('.choices .attack');
-    //   setTimeout(function() {
-    //     items[0].classList.add('moveUp1');
-    //     items[1].classList.toggle('moveUp2');
-    //   }, 1);
-
-    // }
     var transitionSelections = function transitionSelections() {
       document.querySelector('.choices').appendChild(userClone);
       document.querySelector('.choices').appendChild(cpuClone);
       var items = document.querySelectorAll('.choices .attack');
       setTimeout(function () {
-        items[0].classList.add('moveUp1');
+        items[0].classList.toggle('moveUp1');
         items[1].classList.toggle('moveUp2');
       }, 1);
     };
@@ -290,12 +283,37 @@ var gameState = {
     console.log(enemy.name + ' after: ' + enemy.health);
   },
   checkWinner: function checkWinner(enemy, attacker) {
-    if (enemy.health <= 0) {
-      console.log('You win ' + attacker.name);
+    console.log(enemy.health + ' ' + attacker.health);
+    console.log(_typeof(enemy.health));
+    if (enemy.health <= 0 || attacker.health <= 0) {
+
+      gameState.elements.winnerScreenEl.classList.toggle('active1');
+      setTimeout(function () {
+        gameState.elements.winnerScreenEl.classList.toggle('active1');
+      }, 3000);
+
+      gameState.healthReset(enemy, attacker);
     }
   },
   randomNumber: function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
+  },
+  healthReset: function healthReset(enemy, attacker) {
+    var userHP = document.querySelector('.player1').querySelector('.stats').querySelector('.health').querySelector('.health-bar').querySelector('.inside');
+    var cpuHP = document.querySelector('.player2').querySelector('.stats').querySelector('.health').querySelector('.health-bar').querySelector('.inside');
+
+    enemy.health = enemy.originalHealth;
+    attacker.health = attacker.originalHealth;
+
+    setTimeout(function () {
+      userHP.style.width = '100%';
+      cpuHP.style.width = '100%';
+      if (document.querySelector('.choices').hasChildNodes() == true) {
+        var child = document.querySelector('.choices');
+        document.querySelector('.choices').removeChild(child.childNodes[0]);
+        document.querySelector('.choices').removeChild(child.childNodes[0]);
+      }
+    }, 1400);
   },
   cpuPick: function cpuPick() {
     do {

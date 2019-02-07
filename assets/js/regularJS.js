@@ -38,6 +38,7 @@ let gameState = {
     pokemonsEl: document.querySelector('.select-screen').querySelectorAll('.character'),
     battleScreenEl: document.getElementById('battle-screen'),
     attackBtnsEl: document.getElementById('battle-screen').querySelectorAll('.attack'),
+    winnerScreenEl: document.getElementById('winner-screen'),
   },
   init: function() {
     console.log(gameState.elements.attackBtnsEl);
@@ -121,22 +122,13 @@ let gameState = {
       document.querySelector('.choices').removeChild(child.childNodes[0]);
     }
 
-    // if (currentPokemon.health >= 1 && currentRivalPokemon.health >= 1) {
-    //   document.querySelector('.choices').appendChild(userClone);
-    //   document.querySelector('.choices').appendChild(cpuClone);
-    //   let items = document.querySelectorAll('.choices .attack');
-    //   setTimeout(function() {
-    //     items[0].classList.add('moveUp1');
-    //     items[1].classList.toggle('moveUp2');
-    //   }, 1);
 
-    // }
     let transitionSelections = function() {
       document.querySelector('.choices').appendChild(userClone);
       document.querySelector('.choices').appendChild(cpuClone);
       let items = document.querySelectorAll('.choices .attack');
       setTimeout(function() {
-        items[0].classList.add('moveUp1');
+        items[0].classList.toggle('moveUp1');
         items[1].classList.toggle('moveUp2');
       }, 1);
     }
@@ -340,18 +332,44 @@ let gameState = {
         userHP.style.width = ((minusPercent > 0) ? minusPercent : 0) + '%';
         console.log(userHP.style.width);  
     }
-  
-    gameState.checkWinner(enemy, attacker);
-  
+    
+      gameState.checkWinner(enemy, attacker);
+      
     console.log(enemy.name + ' after: ' + enemy.health);
   },
   checkWinner: function(enemy, attacker) {
-    if (enemy.health <= 0) {
-      console.log('You win ' + attacker.name);
-    }
+    console.log(enemy.health + ' ' + attacker.health)
+    console.log(typeof(enemy.health));
+    if (enemy.health <= 0 || attacker.health <= 0) {
+
+        gameState.elements.winnerScreenEl.classList.toggle('active1');
+        setTimeout(function() {
+          gameState.elements.winnerScreenEl.classList.toggle('active1');
+        },3000);
+        
+        gameState.healthReset(enemy, attacker);
+    } 
   }, 
   randomNumber: function (min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
+  },
+  healthReset: function(enemy, attacker) {
+    let userHP = document.querySelector('.player1').querySelector('.stats').querySelector('.health').querySelector('.health-bar').querySelector('.inside');
+    let cpuHP = document.querySelector('.player2').querySelector('.stats').querySelector('.health').querySelector('.health-bar').querySelector('.inside');
+
+    enemy.health = enemy.originalHealth;
+    attacker.health = attacker.originalHealth;
+
+    setTimeout(function() {
+      userHP.style.width = '100%';
+      cpuHP.style.width = '100%';
+      if (document.querySelector('.choices').hasChildNodes() == true) {
+        let child = document.querySelector('.choices');
+        document.querySelector('.choices').removeChild(child.childNodes[0]);
+        document.querySelector('.choices').removeChild(child.childNodes[0]);
+      }
+
+    },1400);
   },
   cpuPick: function () {
     do {
